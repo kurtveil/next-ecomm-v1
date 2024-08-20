@@ -1,5 +1,6 @@
 'use client'
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from 'react';
 
@@ -22,7 +23,7 @@ function LoginPage() {
 
             <div className="bg-white flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
+                    <Image
                         alt="Your Company"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                         className="mx-auto h-10 w-auto"
