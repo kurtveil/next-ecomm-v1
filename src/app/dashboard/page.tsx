@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
 import { useSession } from 'next-auth/react';
+import Table from '@/components/Table';
 // interface Props {}
 
 function DashboardPage() {
@@ -8,7 +9,10 @@ function DashboardPage() {
     // console.log(session, status);
     
     return (
-        <div>Dashboard page</div>
+        <div>
+            Dashboard page
+            <Table/>
+            </div>
     )
 }
 

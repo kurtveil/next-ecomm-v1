@@ -22,6 +22,7 @@ function Page(props: Props) {
   
 
     return (
+      <>
         <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop
           transition
@@ -54,12 +55,12 @@ function Page(props: Props) {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button
+                {/* <button
                   type="button"
                   onClick={() => setOpen(false)}
                   className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                 >
-                  Deactivate
+                  Desactivate
                 </button>
                 <button
                   type="button"
@@ -68,12 +69,13 @@ function Page(props: Props) {
                   className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 >
                   Cancel
-                </button>
+                </button> */}
               </div>
             </DialogPanel>
           </div>
         </div>
       </Dialog>
+      </>
     )
 }
 

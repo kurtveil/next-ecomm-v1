@@ -1,4 +1,3 @@
-// Scanner.tsx
 import React, { useEffect, useCallback } from 'react';
 import Quagga from '@ericblade/quagga2';
 
@@ -17,7 +16,7 @@ const Scanner: React.FC<ScannerProps> = ({ onDetected }) => {
   );
 
   useEffect(() => {
-    Quagga.init(
+     Quagga.init(
       {
         inputStream: {
           type: 'LiveStream',
