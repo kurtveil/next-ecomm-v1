@@ -1,9 +1,7 @@
 import React from 'react'
 
-interface Props { }
 
-function Table(props: Props) {
-    const { } = props
+function Table() {
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -51,7 +49,7 @@ function Table(props: Props) {
                             </div>
                         </td>
                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
+                            Apple MacBook Pro 17
                         </th>
                         <td className="px-6 py-4">
                             Silver
@@ -80,8 +78,6 @@ function Table(props: Props) {
                 </tbody>
             </table>
         </div>
-
-
     )
 }
 
