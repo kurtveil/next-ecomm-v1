@@ -8,7 +8,6 @@ interface ScannerProps {
 const Scanner: React.FC<ScannerProps> = ({ onDetected }) => {
   const handleDetected = useCallback(
     (result: any) => {
-        console.log(result);
         
       onDetected(result);
     },
@@ -57,7 +56,7 @@ const Scanner: React.FC<ScannerProps> = ({ onDetected }) => {
     <div
       id="interactive"
       className="viewport"
-      style={{ width: '410px', height: '280px', margin: '0 auto' }}
+      style={{ width: 'auto', height: 'auto', margin: '0 auto' }}
     />
   );
 };
