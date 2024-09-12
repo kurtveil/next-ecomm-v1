@@ -10,6 +10,8 @@ function LoginPage() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+        console.log(formData);
+        
         const res = await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get("password"),

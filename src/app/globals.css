@@ -34,3 +34,6 @@ body {
 section{ 
   height: 100vh;
 }
+.drawingBuffer{
+  height: 5vh;
+}

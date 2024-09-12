@@ -11,6 +11,7 @@ export const connectDB = async () => {
         if (connection.readyState === 1) {
             return Promise.resolve(true)
         }
+        console.log('Conexión exitosa a MongoDB');
     } catch (error) {
         console.log(error);
         return Promise.reject(false);
