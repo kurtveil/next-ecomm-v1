@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export const dynamic = 'force-static'
 
 export async function POST(req: Request) {
-    console.log(req);
     
     const { name, price, amount, code } = await req.json();
     try {
@@ -39,17 +38,14 @@ export async function POST(req: Request) {
     }
 }
 
-export async function GET( res: NextApiResponse) {
+export async function GET() {
     
     try { // Listar todos los productos
         await connectDB();
         const response = await Products.find({});
         return NextResponse.json(response);
-        
     } catch (error) {
-        console.log(error);
-        console.error('Error al obtener los productos:', error);
-        res.status(500).json({ message: 'Error al obtener los productos' });
+        return NextResponse.json({ message: 'Error al obtener los productos' , status: 500})
     }
 }
 

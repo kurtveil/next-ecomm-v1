@@ -1,4 +1,3 @@
-import product from '@/models/product';
 import React, { FormEvent, useEffect, useState } from 'react';
 interface ScannerProps {
   code: string;
@@ -16,12 +15,7 @@ const Form = (props: ScannerProps) => {
     description: props.product?.description
   });
 
-  useEffect(()=> {
-    if (!code) {
-      setCode(props.product.code)
-    }
-  })
-  
+ 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData =  new FormData(e.currentTarget);

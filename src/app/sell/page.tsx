@@ -4,22 +4,16 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Table from '@/components/Table';
 import Scanner from '@/components/Scanner';
-import axios from 'axios';
 import { getProductById } from '@/services/productService';
 
 interface props {
-  openModal: boolean,
-  onCloseModal: any,
-  product?: any
 }
 
 function Page(props: props) {
-  // const { } = props
   const [products, setProducts] = useState();
   const [code, setCode] = useState();
   const [open, setOpen] = useState(true)
   const router = useRouter();
-  // const [scannedResult, setScannedResult] = useState<any>(null);
   const [product, setProduct] = useState();
 
   const fetchPost = async (code: string)=> {
@@ -46,13 +40,9 @@ function Page(props: props) {
       setCode(result.codeResult.code);
       fetchPost(result.codeResult.code);
       setOpen(false);
-      // router.push(`/invoice/${result.codeResult.code}`);
     }
 
   };
-
-
-
 
 
   const handleBooleanChange = (newValue: any) => {
@@ -84,14 +74,9 @@ function Page(props: props) {
                   <div className="mt-3 text-center sm:ml-2 sm:mt-0 sm:text-left">
                     <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
 
-                      {props.product ? 'Editar Producto' : 'Registre el producto'}
+                       Registre el producto
                     </DialogTitle>
                       <Scanner closeModal={handleClose} onDetected={handleScanResult} stopScanner={open} />
-
-
-
-
-
                   </div>
                 </div>
               </div>
