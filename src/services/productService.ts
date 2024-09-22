@@ -11,15 +11,11 @@ export async function getAllProducts() {
         },
       });
       const data = await products.json();
-   
-      
       return data;
-      
     } catch (error: any) {
       console.log(error);
       return new NextResponse(error);
     }
-
   }
 
 
@@ -41,8 +37,17 @@ export async function getAllProducts() {
 };
 
 
-export async function getProductById(code: string) {
+export async function updateProduct(formData: FormData, id: string) {
     try {
+      const res = await axios.put('/api/products', {
+        name: formData.get('name'),
+        price: formData.get('price'),
+        amount: formData.get('amount'),
+        code: formData.get('code'),
+        description: formData.get('description'),
+        productId: id
+    });
+    return res;
     } catch (error) {
      console.log(error);
         

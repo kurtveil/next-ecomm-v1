@@ -1,17 +1,17 @@
 import { connectDB } from "@/libs/mongodb";
-import Products from '@/models/product';
+import Product from '@/models/product';
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 export const dynamic = 'force-static'
 
 export async function POST(req: Request) {
     
-    const { name, price, amount, code } = await req.json();
+    const { name, price, amount, code, description } = await req.json();
     try {
         await connectDB();
         // Crea un nuevo producto
-        if (name != '' && code != '' && amount != '' && price != ''){
-            const newProduct = new Products({ name, price, code, amount, });
+        if (name != '' && code != '' && amount != '' && price != '' && description !== ''){
+            const newProduct = new Product({ name, price, code, amount, description});
             const savedProduct = await newProduct.save();
             return NextResponse.json({
                 code: savedProduct.code,
@@ -40,12 +40,50 @@ export async function POST(req: Request) {
 
 export async function GET() {
     
-    try { // Listar todos los productos
+    try { // get all products
         await connectDB();
-        const response = await Products.find({});
+        const response = await Product.find({});
         return NextResponse.json(response);
     } catch (error) {
         return NextResponse.json({ message: 'Error al obtener los productos' , status: 500})
     }
 }
 
+export async function PUT(req: Request) {
+    
+    try { // update product
+        await connectDB();
+        const { name, price, amount, productId, description } = await req.json();
+        
+        console.log( name, price, amount, productId, description );
+        
+        
+        const response = await Product.updateOne(
+            { _id: productId },
+            { name, price, amount, description }
+        );
+        return NextResponse.json(response);
+    } catch (error) {
+        return NextResponse.json({ message: 'Error al actualizar el producto' , status: 500})
+    }
+}
+
+export async function DELETE({params}: any)  {
+  
+  try {
+    await connectDB();  
+    
+    const foundProduct = await Product.findOneAndDelete({ params }).exec();
+    if (!foundProduct) {
+      return NextResponse.json({
+        error: `Error al buscar el producto ${params}`,
+      });
+    }
+    return NextResponse.json({
+      product: foundProduct,
+  })
+  } catch (error) {
+    console.error('Error delete product:', error);
+    return null;
+  }
+}

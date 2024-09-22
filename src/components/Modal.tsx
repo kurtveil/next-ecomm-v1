@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Description, Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Scanner from './Scanner';
 import Form from './Form';
-import axios, { AxiosError } from 'axios';
-import { createProduct, getAllProducts } from '@/services/productService';
 
 interface props {
     openModal: boolean,
     onCloseModal: any,
-    product?: any
+    product?: any,
+    form: any
 }
 
 function Modal(props: props) {
     const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState('');
     const [scannedResult, setScannedResult] = useState<any>(null);
 
-    const handleFormSubmit = async (formData: FormData) => { // crear producto
-        try {
-            await createProduct(formData);
-            await getAllProducts();
-            setOpen(false);
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                console.log(error);
-            }
-        }
+    const handleFormSubmit = async (formData: FormData) => {
+        const id = props.product._id;
+        props.form({ id: id, form: formData });
+
     };
 
     const handleScanResult = (result: any) => {
@@ -34,7 +28,18 @@ function Modal(props: props) {
 
     };
 
-    const handleClose = (data: any) => {
+    const handleTitleModal = () => {
+        if (props.product.event === 'edit') {
+            return 'Editar producto';
+        } else if (props.product.event === 'delete') {
+            return 'Eliminar producto';
+        } else {
+            return 'Registrar producto';
+
+        }
+    }
+
+    const handleClose = (data?: any) => {
         setOpen(false);
         props.onCloseModal();
 
@@ -57,21 +62,32 @@ function Modal(props: props) {
 
                                 <div className="mt-3 text-center sm:ml-2 sm:mt-0 sm:text-left">
                                     <DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                        
-                                        {props.product ? 'Editar Producto' : 'Registre el producto'}
+                                        {handleTitleModal()}
                                     </DialogTitle>
-                                    {!scannedResult && !props.product ? (
-                                         <Scanner closeModal={handleClose} onDetected={handleScanResult} stopScanner={open} />
-                                      
+                                    {
+                                        handleTitleModal() === 'Eliminar producto' ?
 
-                                    ) : (
-                                        <div className="mt-2">
-                                        <Form code={scannedResult} onSubmit={handleFormSubmit} cancelForm={handleClose} product={props.product} />
-                                    </div>
-                                    )}
+                                            <div>
+                                                <Description>This will permanently deactivate your account</Description>
+                                                <button className="inline-flex w-full justify-center rounded-md bg-gray-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500 sm:ml-3 sm:w-auto"
+                                                    type="button" onClick={() => { }}>Cancel
+                                                </button>
+                                                <button
+                                                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                                                    onClick={() => { }}>Delete
+                                                </button>
+                                            </div> :
+                                            <div>
+                                                {!scannedResult && !props.product ? (
+                                                    <Scanner closeModal={handleClose} onDetected={handleScanResult} stopScanner={open} />
+                                                ) : (
+                                                    <div className="mt-2">
+                                                        <Form code={scannedResult} onSubmit={handleFormSubmit} cancelForm={handleClose} product={props.product.product} />
+                                                    </div>
+                                                )}
 
-                                 
-
+                                            </div>
+                                    }
                                 </div>
                             </div>
                         </div>

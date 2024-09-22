@@ -4,42 +4,49 @@ import Table from '@/components/Table';
 import LoadingSpinner from '@/components/LoadingSpinner'
 import Alert from '@/components/Alert';
 import Modal from '@/components/Modal';
-import { getAllProducts } from '@/services/productService';
+import { createProduct, getAllProducts, updateProduct } from '@/services/productService';
+import { AxiosError } from 'axios';
 export default function Page() {
 
   const [open, setOpen] = useState(false)
   const [products, setProducts] = useState();
-  const [product, setProduct] = useState();
+  const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
-  
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await getAllProducts().then((data)=> {
-           data.map((product: any)=> {
-            if (product.price) {
-              const formatter = new Intl.NumberFormat('es-CO', {
-                style: 'currency',
-                currency: 'COP', // Código ISO de la moneda (peso colombiano)
-              });
-              product.price =  formatter.format(Number(product.price)) 
-            }
-          })
-          setProducts(data)
-        });
-        setIsLoading(false)
-      } catch (error: any) {
-        console.log(error);
-        setError(error)
-      }
-
+  async function fetchProducts() {
+    try {
+       await getAllProducts().then((data)=> {
+         data.map((product: any)=> {
+          if (product.price) {
+            const formatter = new Intl.NumberFormat('es-CO', {
+              style: 'currency',
+              currency: 'COP', // Código ISO de la moneda (peso colombiano)
+            });
+            product.price =  formatter.format(Number(product.price)) 
+          }
+        })
+        setProducts(data)
+      });
+      setIsLoading(false)
+    } catch (error: any) {
+      console.log(error);
+      setError(error)
     }
+
+  }
+  useEffect(() => {
+   
     fetchProducts();
   }, []);
 
-  const handleBooleanChange = (newValue: any) => {
-    setProduct(newValue)
+  const handleEventEmit = (product: any, event: string) => {
+    console.log(event);
+    
+    console.log(product);
+    const obj = {
+      product , event
+    }
+    setProduct(obj)
     setOpen(true);
   };
 
@@ -49,8 +56,32 @@ export default function Page() {
   };
   const handleOpenModal = () => {
     setOpen(true);
-    setProduct(undefined);
+    setProduct({});
   };
+
+  const handleSubmitEvent = async (data: any) => {
+    if (product) { // editar producto
+      try {
+          await updateProduct(data.form, data.id);
+          await fetchProducts();
+          handleCloseModal();
+      } catch (error) {
+          if (error instanceof AxiosError) {
+              console.log(error);
+          }
+      }
+  } else { // crear producto
+      try {
+          await createProduct(data.form);
+          await fetchProducts();
+          handleCloseModal();
+      } catch (error) {
+          if (error instanceof AxiosError) {
+              console.log(error);
+          }
+      }
+  }
+  }
 
   return (
     <>
@@ -65,7 +96,7 @@ export default function Page() {
               <div>
                 <button type="button" className="m-3 inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                   onClick={handleOpenModal}>Agregar</button>
-                <Table products={products} onBooleanChange={handleBooleanChange}/>
+                <Table products={products} emitProduct={handleEventEmit}/>
               </div>
             )
         }
@@ -81,7 +112,7 @@ export default function Page() {
         }
       </div>
 
-      <Modal openModal={open} onCloseModal={handleCloseModal} product={product}/>
+      <Modal openModal={open} onCloseModal={handleCloseModal} product={product} form={handleSubmitEvent}/>
     
     </>
   )

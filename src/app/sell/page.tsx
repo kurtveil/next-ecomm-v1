@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Table from '@/components/Table';
 import Scanner from '@/components/Scanner';
-import { getProductById } from '@/services/productService';
+// import { getProductById } from '@/services/productService';
 
 interface props {
 }
@@ -16,29 +16,29 @@ function Page(props: props) {
   const router = useRouter();
   const [product, setProduct] = useState();
 
-  const fetchPost = async (code: string)=> {
-    try {
-      console.log(code);
-      await getProductById(code).then((res)=> {
-        console.log(res);
+//   const fetchPost = async (code: string)=> {
+//     try {
+//       console.log(code);
+//       await getProductById(code).then((res)=> {
+//         console.log(res);
         
-      });
-        // console.log(response);
-        // let products = await response;
-        // setAmount(response.data.product.price)
-        // setProduct(products.data.product);
-        // console.log(product);
+//       });
+//         // console.log(response);
+//         // let products = await response;
+//         // setAmount(response.data.product.price)
+//         // setProduct(products.data.product);
+//         // console.log(product);
         
-    } catch (error) {
-     console.log(error);
+//     } catch (error) {
+//      console.log(error);
         
-    }
+//     }
 
-}
+// }
   const handleScanResult = (result: any) => {
     if (result && result.codeResult.code) {
       setCode(result.codeResult.code);
-      fetchPost(result.codeResult.code);
+      // fetchPost(result.codeResult.code);
       setOpen(false);
     }
 
